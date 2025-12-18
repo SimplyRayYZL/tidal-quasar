@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { formatPrice, WHATSAPP_NUMBER } from '../data/products';
 import { supabase } from '../lib/supabase';
+import { trackEvent, EVENTS } from '../lib/analytics';
 import ProductCard from '../components/ProductCard';
 import './ProductDetails.css';
 
@@ -12,6 +13,7 @@ export default function ProductDetails() {
     const [product, setProduct] = useState(null);
     const [relatedProducts, setRelatedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isAdding, setIsAdding] = useState(false);
 
     useEffect(() => {
         async function fetchProductData() {
@@ -31,6 +33,9 @@ export default function ProductDetails() {
                     isNew: productData.is_new
                 };
                 setProduct(formattedProduct);
+
+                // Track page view
+                trackEvent(EVENTS.PAGE_VIEW, { page: 'product_details', product_id: id, product_name: formattedProduct.name });
 
                 // Fetch related products
                 const { data: relatedData, error: relatedError } = await supabase
@@ -75,7 +80,17 @@ export default function ProductDetails() {
     }
 
     const handleAddToCart = () => {
+        if (isAdding) return;
+
+        setIsAdding(true);
         addToCart(product);
+
+        // Track add to cart
+        trackEvent(EVENTS.ADD_TO_CART, { product_id: product.id, product_name: product.name, price: product.price });
+
+        setTimeout(() => {
+            setIsAdding(false);
+        }, 1500);
     };
 
     const handleWhatsAppOrder = () => {
@@ -148,13 +163,27 @@ export default function ProductDetails() {
                         </div>
 
                         <div className="action-buttons">
-                            <button className="btn btn-primary btn-large btn-glow" onClick={handleAddToCart}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                أضف للسلة
+                            <button
+                                className={`btn btn-primary btn-large btn-glow ${isAdding ? 'btn-success-state' : ''}`}
+                                onClick={handleAddToCart}
+                            >
+                                {isAdding ? (
+                                    <>
+                                        <svg className="check-icon-anim" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        تمت الإضافة!
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <circle cx="9" cy="21" r="1"></circle>
+                                            <circle cx="20" cy="21" r="1"></circle>
+                                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                        </svg>
+                                        أضف للسلة
+                                    </>
+                                )}
                             </button>
                             <button className="btn btn-whatsapp btn-large" onClick={handleWhatsAppOrder}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { formatPrice, WHATSAPP_NUMBER } from '../data/products';
 import { supabase } from '../lib/supabase';
+import { trackEvent, EVENTS } from '../lib/analytics';
 import './Cart.css';
 
 export default function Cart() {
@@ -24,6 +25,19 @@ export default function Cart() {
         address: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Track cart view on mount
+    useEffect(() => {
+        if (cartItems.length > 0) {
+            trackEvent(EVENTS.VIEW_CART, { items_count: cartItems.length, total: getCartTotal() });
+        }
+    }, []);
+
+    // Handle starting checkout
+    const handleStartCheckout = () => {
+        setShowCheckout(true);
+        trackEvent(EVENTS.CHECKOUT_START, { items_count: cartItems.length, total: getCartTotal() });
+    };
 
     if (orderSuccess) {
         return (
@@ -87,6 +101,13 @@ export default function Cart() {
                 .insert([orderData]);
 
             if (error) throw error;
+
+            // Track purchase
+            trackEvent(EVENTS.PURCHASE, {
+                items_count: cartItems.length,
+                total: getCartTotal(),
+                items: cartItems.map(i => ({ id: i.id, name: i.name, qty: i.quantity }))
+            });
 
             // Success
             clearCart();
@@ -213,7 +234,7 @@ export default function Cart() {
                             <>
                                 <button
                                     className="btn btn-primary btn-checkout"
-                                    onClick={() => setShowCheckout(true)}
+                                    onClick={handleStartCheckout}
                                 >
                                     متابعة الشراء
                                 </button>
