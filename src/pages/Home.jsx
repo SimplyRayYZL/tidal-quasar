@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { WHATSAPP_NUMBER } from '../data/products';
+import { trackEvent, EVENTS } from '../lib/analytics';
 import ProductCard from '../components/ProductCard';
 import './Home.css';
 
@@ -10,6 +11,9 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Track page view
+        trackEvent(EVENTS.PAGE_VIEW, { page: 'home' });
+
         async function fetchProducts() {
             const { data, error } = await supabase.from('products').select('*');
             if (error) {

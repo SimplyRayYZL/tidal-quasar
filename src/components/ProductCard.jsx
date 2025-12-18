@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../data/products';
+import { trackEvent, EVENTS } from '../lib/analytics';
 import './ProductCard.css';
 
 export default function ProductCard({ product }) {
@@ -16,6 +17,9 @@ export default function ProductCard({ product }) {
 
         setIsAdding(true);
         addToCart(product);
+
+        // Track add to cart
+        trackEvent(EVENTS.ADD_TO_CART, { product_id: product.id, product_name: product.name, price: product.price });
 
         // Reset after animation
         setTimeout(() => {

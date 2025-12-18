@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { categories } from '../data/products';
+import { trackEvent, EVENTS } from '../lib/analytics';
 import ProductCard from '../components/ProductCard';
 import './Products.css';
 
@@ -14,6 +15,9 @@ export default function Products() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Track page view
+        trackEvent(EVENTS.PAGE_VIEW, { page: 'products' });
+
         async function fetchProducts() {
             const { data, error } = await supabase.from('products').select('*');
             if (error) {
