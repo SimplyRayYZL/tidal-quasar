@@ -137,7 +137,7 @@
     font-weight: 600;
     border-radius: var(--radius-md);
     margin-top: auto;
-    transition: all var(--transition-fast);
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
 }
@@ -148,9 +148,49 @@
 }
 
 .btn-add-cart svg {
-    transition: transform var(--transition-fast);
+    transition: transform 0.3s ease;
 }
 
 .btn-add-cart:hover svg {
     transform: scale(1.1);
+}
+
+/* Adding State - Success Animation */
+.btn-add-cart.adding {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    animation: pulse-success 0.5s ease;
+}
+
+.btn-add-cart.adding .check-icon {
+    animation: check-pop 0.5s ease forwards;
+}
+
+@keyframes pulse-success {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes check-pop {
+    0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.3) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
 }

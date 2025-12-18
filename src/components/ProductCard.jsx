@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../data/products';
@@ -5,11 +6,21 @@ import './ProductCard.css';
 
 export default function ProductCard({ product }) {
     const { addToCart } = useCart();
+    const [isAdding, setIsAdding] = useState(false);
 
     const handleAddToCart = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        if (isAdding) return;
+
+        setIsAdding(true);
         addToCart(product);
+
+        // Reset after animation
+        setTimeout(() => {
+            setIsAdding(false);
+        }, 1500);
     };
 
     return (
@@ -38,13 +49,27 @@ export default function ProductCard({ product }) {
                     ))}
                 </div>
 
-                <button className="btn-add-cart" onClick={handleAddToCart}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    أضف للسلة
+                <button
+                    className={`btn-add-cart ${isAdding ? 'adding' : ''}`}
+                    onClick={handleAddToCart}
+                >
+                    {isAdding ? (
+                        <>
+                            <svg className="check-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            تمت الإضافة!
+                        </>
+                    ) : (
+                        <>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            أضف للسلة
+                        </>
+                    )}
                 </button>
             </div>
         </Link>

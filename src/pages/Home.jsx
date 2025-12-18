@@ -253,9 +253,9 @@ export default function Home() {
                             <p>ضمان سنتين على جميع المنتجات</p>
                         </div>
                         <div className="feature-card animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-                            <div className="feature-icon animate-bounce" style={{ animationDelay: '0.2s' }}>💳</div>
-                            <h3>تقسيط مريح</h3>
-                            <p>تقسيط بدون فوائد حتى 12 شهر</p>
+                            <div className="feature-icon animate-bounce" style={{ animationDelay: '0.2s' }}>📞</div>
+                            <h3>دعم فني متواصل</h3>
+                            <p>دعم فني 7 أيام في الأسبوع</p>
                         </div>
                         <div className="feature-card animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
                             <div className="feature-icon animate-bounce" style={{ animationDelay: '0.3s' }}>🔧</div>
