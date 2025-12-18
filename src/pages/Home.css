@@ -2,17 +2,21 @@
 .hero {
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg, #2B7CB4 0%, #1a4a6e 100%);
 }
 
 .hero-bg {
     position: relative;
     z-index: 0;
+    width: 100%;
 }
 
 .hero-bg-image {
     width: 100%;
     height: auto;
     display: block;
+    min-height: 500px;
+    object-fit: cover;
 }
 
 @keyframes zoomIn {
@@ -559,8 +563,6 @@
     .hero {
         min-height: auto;
         padding: 0;
-        margin-top: -1px;
-        /* Remove any gap from header */
     }
 
     .hero-bg {
@@ -569,9 +571,10 @@
 
     .hero-bg-image {
         width: 100%;
-        height: auto;
-        min-height: 60vh;
+        height: 80vh;
+        min-height: 500px;
         object-fit: cover;
+        object-position: center bottom;
     }
 
     .hero .container {
