@@ -17,6 +17,13 @@ export default function Cart() {
     } = useCart();
 
     const [orderSuccess, setOrderSuccess] = useState(false);
+    const [showCheckout, setShowCheckout] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        address: ''
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     if (orderSuccess) {
         return (
