@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { formatPrice } from '../../data/products';
+import ProductForm from './ProductForm';
 import './Orders.css'; // Reusing table styles
 
 export default function AdminProducts() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showForm, setShowForm] = useState(false);
+    const [editingProduct, setEditingProduct] = useState(null);
 
     useEffect(() => {
         fetchProducts();
     }, []);
 
     async function fetchProducts() {
+        setLoading(true);
         try {
             const { data, error } = await supabase
                 .from('products')
@@ -45,13 +49,28 @@ export default function AdminProducts() {
         }
     };
 
+    const handleEdit = (product) => {
+        setEditingProduct(product);
+        setShowForm(true);
+    };
+
+    const handleAdd = () => {
+        setEditingProduct(null);
+        setShowForm(true);
+    };
+
+    const handleCloseForm = () => {
+        setShowForm(false);
+        setEditingProduct(null);
+    };
+
     if (loading) return <div className="loading-spinner">جاري التحميل...</div>;
 
     return (
         <div className="products-page animate-fadeIn">
             <div className="page-header">
                 <h1>إدارة المنتجات</h1>
-                <button className="btn btn-primary" onClick={() => alert('قريباً: إضافة منتج جديد')}>
+                <button className="btn btn-primary" onClick={handleAdd}>
                     + إضافة منتج
                 </button>
             </div>
@@ -89,19 +108,36 @@ export default function AdminProducts() {
                                     {product.is_new ? <span className="badge-new-sm">جديد</span> : '-'}
                                 </td>
                                 <td>
-                                    <button
-                                        className="btn-icon delete"
-                                        onClick={() => handleDelete(product.id)}
-                                        title="حذف"
-                                    >
-                                        🗑️
-                                    </button>
+                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <button
+                                            className="btn-icon edit"
+                                            onClick={() => handleEdit(product)}
+                                            title="تعديل"
+                                        >
+                                            ✏️
+                                        </button>
+                                        <button
+                                            className="btn-icon delete"
+                                            onClick={() => handleDelete(product.id)}
+                                            title="حذف"
+                                        >
+                                            🗑️
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {showForm && (
+                <ProductForm
+                    product={editingProduct}
+                    onClose={handleCloseForm}
+                    onSave={fetchProducts}
+                />
+            )}
         </div>
     );
 }
