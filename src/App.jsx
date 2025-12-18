@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import GoogleTagManager from './components/GoogleTagManager';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
@@ -17,10 +18,12 @@ import ProtectedRoute from './components/admin/ProtectedRoute';
 import Dashboard from './pages/admin/Dashboard';
 import Orders from './pages/admin/Orders';
 import AdminProducts from './pages/admin/Products';
+import AdminSettings from './pages/admin/Settings';
 
 function App() {
     return (
         <AuthProvider>
+            <GoogleTagManager />
             <div className="app">
                 <Routes>
                     {/* Public Routes */}
@@ -84,6 +87,7 @@ function App() {
                             <Route index element={<Dashboard />} />
                             <Route path="orders" element={<Orders />} />
                             <Route path="products" element={<AdminProducts />} />
+                            <Route path="settings" element={<AdminSettings />} />
                         </Route>
                     </Route>
                 </Routes>

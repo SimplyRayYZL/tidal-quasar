@@ -29,6 +29,10 @@ export default function AdminLayout() {
                         <span>🏃</span>
                         <span>المنتجات</span>
                     </Link>
+                    <Link to="/admin/settings" className={`nav-item ${isActive('/admin/settings') ? 'active' : ''}`}>
+                        <span>⚙️</span>
+                        <span>الإعدادات</span>
+                    </Link>
                 </nav>
 
                 <div className="sidebar-footer">
