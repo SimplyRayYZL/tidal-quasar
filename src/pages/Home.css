@@ -557,25 +557,62 @@
 
 @media (max-width: 576px) {
     .hero {
-        min-height: 80vh;
-        padding: 3rem 0;
+        min-height: auto;
+        padding: 0;
+        margin-top: -1px;
+        /* Remove any gap from header */
+    }
+
+    .hero-bg {
+        width: 100%;
+    }
+
+    .hero-bg-image {
+        width: 100%;
+        height: auto;
+        min-height: 60vh;
+        object-fit: cover;
+    }
+
+    .hero .container {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        padding: 0 1rem;
+        width: 90%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        padding: 1.25rem;
     }
 
     .hero h1 {
-        font-size: 2.25rem;
+        font-size: 1.5rem;
     }
 
     .hero p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .hero-badge {
-        font-size: 0.85rem;
-        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
     }
 
     .hero-buttons {
         flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn-primary-hero,
+    .btn-whatsapp-hero {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
     }
 
     .hero-stats {
