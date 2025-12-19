@@ -142,22 +142,6 @@ export default function ProductDetails() {
                             )}
                         </div>
 
-                        <p className="description">{product.description}</p>
-
-                        <div className="features-list">
-                            <h3>المميزات</h3>
-                            <ul>
-                                {product.features && product.features.map((feature, index) => (
-                                    <li key={index} className="animate-fadeInUp" style={{ animationDelay: `${index * 0.1}s` }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
                         <div className="stock-info">
                             <span className="in-stock">✓ متوفر في المخزون</span>
                         </div>
@@ -215,6 +199,33 @@ export default function ProductDetails() {
                                     <strong>صيانة منزلية</strong>
                                     <span>خدمة ما بعد البيع</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Detailed Description Section */}
+                <section className="details-section animate-fadeInUp">
+                    <div className="details-tabs">
+                        <div className="tab active">الوصف والمميزات</div>
+                    </div>
+                    <div className="tab-content">
+                        <div className="content-block">
+                            <h3>وصف المنتج</h3>
+                            <p className="description">{product.description}</p>
+                        </div>
+
+                        <div className="content-block">
+                            <h3>المواصفات والمميزات</h3>
+                            <div className="features-grid-list">
+                                {product.features && product.features.map((feature, index) => (
+                                    <div key={index} className="feature-item-inline">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>{feature}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
