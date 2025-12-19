@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import ImageUpload from '../../components/admin/ImageUpload';
 import './ProductForm.css';
 
 export default function ProductForm({ product, onClose, onSave }) {
@@ -134,17 +135,11 @@ export default function ProductForm({ product, onClose, onSave }) {
                         </div>
                     </div>
 
-                    <div className="form-group">
-                        <label>رابط الصورة *</label>
-                        <input
-                            type="text"
-                            name="image"
-                            value={formData.image}
-                            onChange={handleChange}
-                            placeholder="/products/example.png أو https://..."
-                            required
-                        />
-                    </div>
+                    <ImageUpload
+                        value={formData.image}
+                        onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                        label="صورة المنتج"
+                    />
 
                     <div className="form-group">
                         <label>الوصف</label>
